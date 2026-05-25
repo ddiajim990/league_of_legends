@@ -24,4 +24,19 @@ public class CharacterService {
         return this.characterRepository.findById(id);
     }
 
+    //Dado un character lo persiste en base de datos
+    public Character save(final Character character) {
+        return this.characterRepository.save(character);
+    }
+
+    //Dado un id de character, lo elimina
+    public boolean delete(final String id) {
+        return this.characterRepository.findById(id)
+                .map(character -> {
+                    this.characterRepository.delete(character);
+                    return true;
+                })
+                .orElse(false);
+    }
+    
 }
