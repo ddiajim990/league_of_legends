@@ -25,18 +25,26 @@ public class CharacterService {
     }
 
     //Dado un character lo persiste en base de datos
-    public Character save(final Character character) {
-        return this.characterRepository.save(character);
+    public Optional<Character> save(final Character character) {
+        return Optional.of(this.characterRepository.save(character));
     }
 
     //Dado un id de character, lo elimina
-    public boolean delete(final String id) {
+    public Optional<Character> delete(final String id) {
         return this.characterRepository.findById(id)
                 .map(character -> {
                     this.characterRepository.delete(character);
-                    return true;
-                })
-                .orElse(false);
+                    return character;
+                });
     }
-    
+
+    //Dado un JSON de un Character (el cual incluye ID) lo actualiza
+    public Optional<Character> update(final String id, final Character character) {
+        return this.characterRepository.findById(character.getId())
+                .map(c -> {
+                    character.setId(id);
+                    return this.characterRepository.save(character);
+                });
+    }
+
 }

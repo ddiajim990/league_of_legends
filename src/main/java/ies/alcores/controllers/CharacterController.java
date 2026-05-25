@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/characters")
@@ -21,7 +22,7 @@ public class CharacterController {
         return ResponseEntity.ok(this.characterService.findAll());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Character> getOne(@PathVariable final String id) {
         return this.characterService.findById(id)
                 .map(ResponseEntity::ok)
@@ -30,13 +31,23 @@ public class CharacterController {
 
     @PostMapping
     public ResponseEntity<Character> save(@RequestBody final Character character) {
-        Character saved = this.characterService.save(character);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return this.characterService.save(character)
+                .map(saved -> ResponseEntity.status(HttpStatus.CREATED).body(saved))
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable final String id) {
-        return characterService.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Character> delete(@PathVariable final String id) {
+        return characterService.delete(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Character> update(@PathVariable final String id, @RequestBody final Character character) {
+        Optional<Character> updated = this.characterService.update(id, character);
+        return updated.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
