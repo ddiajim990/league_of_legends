@@ -50,4 +50,8 @@ public class CharacterController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/multi-role")
+    public ResponseEntity<List<Character>> getMultiRole() {
+        return ResponseEntity.ok(this.characterService.findMultiRole());
+    }
 }

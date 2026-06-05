@@ -47,4 +47,9 @@ public class CharacterService {
                 });
     }
 
+    public List<Character> findMultiRole() {
+        return this.characterRepository.findAll().stream()
+                .filter(character -> character.getRoles() != null && character.getRoles().size() > 1)
+                .toList();
+    }
 }
