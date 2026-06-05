@@ -2,4 +2,4 @@ spring:
   application:
     name: league_of_legends
   mongodb:
-    url: mongodb://127.0.0.1:27017/league_of_legends
+    uri: mongodb://127.0.0.1:27017/league_of_legends
