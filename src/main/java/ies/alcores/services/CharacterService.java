@@ -52,4 +52,9 @@ public class CharacterService {
                 .filter(character -> character.getRoles() != null && character.getRoles().size() > 1)
                 .toList();
     }
+
+    public List<Character> findTanks() {
+        return this.characterRepository.findTanks();
+    }
+
 }
